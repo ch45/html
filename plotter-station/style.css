@@ -1,0 +1,187 @@
+html,
+body,
+.home {
+  height: 100%;
+}
+
+.home  {
+    background-size: cover;
+    display: table;
+    width: 100%;
+    padding: 0 20%;
+    box-shadow: inset 0 0 100px #000;
+}
+
+.home-text {
+    color: white;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.home-text h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 70px;
+    letter-spacing: -3px;
+}
+
+body {
+  background: url('MakeBmthBackGnd.png');
+  background-position: center;
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+label {
+  color: white;
+}
+
+.menu-enable {
+  display: inline-block;
+}
+
+.info {
+  color: white;
+}
+
+.setup {
+  color: white;
+}
+
+canvas {
+  background-color: white;
+}
+
+nav.navbar-dark {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+}
+
+section {
+  padding: 100px;
+  min-height: 100%
+}
+
+section h2 {
+  color: white;  
+}
+
+section h3 {
+  color: lightgray;  
+}
+
+section table {
+  color: white;  
+  border: 1px solid white;
+}
+
+h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+    /* margin: 60px 0 0; */
+}
+
+h2 + p {
+    text-align: center;
+    margin-top: -60px;
+}
+
+#drawing-pad {
+  border:1px solid #000000;
+}
+
+#control button {
+  margin: 20px;
+}
+
+.img-link {
+  max-height: 19px;
+}
+
+.plotter-control {
+  height: 250px;
+  width: 340px;
+  overflow: auto;
+  background: white;
+  padding: 20px;
+  box-sizing: border-box;
+  border: solid 1px #ccc;
+}
+
+.draggable-button {
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.primary-colour {
+  color: #007bff;
+}
+
+.secondary-colour {
+  color: #545b62;
+}
+
+.secondary-select {
+  background-color: gray;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+}
+
+/* Mouse-over effects */
+.slider:hover {
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  height: 25px;
+  background: darkgray;
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slider-course::-webkit-slider-thumb {
+  width: 35px;
+}
+
+.slider-fine::-webkit-slider-thumb {
+  width: 10px;
+}
+
+#ramp-graphic {
+  background: white;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: darkgrey;
+}
+
+/* Media Queries */
+
+@media only screen and ( max-width : 568px ) {
+    .cover h1 {
+        font-size: 40px;
+    }
+    section {
+        padding: 60px;
+    }
+    
+}
+

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link href="https://code.jquery.com/ui/1.12.1/themes/vader/jquery-ui.css" rel="stylesheet">
+  <link href="normalize.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/6e5ed2203b.js" crossorigin="anonymous"></script>
+  <title>Plotter Station</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed float-left" data-toggle="collapse" data-target="#navbar-collapse"><span class="sr-only">Toggle navigation</span> <span class="navbar-toggler-icon"></span></button>
+      </div>
+
+      <div id="navbar-collapse" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <ul class="nav nav-pills">
+            <li role="presentation">
+              <a class="nav-link" href="#control" onclick="alert('send pause');">Pause</a>
+            </li>
+          </ul>
+        </ul>
+
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#draw">Draw</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#files">Files</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#preview">Preview</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#control">Control</a>
+          </li>
+
+          <li class="nav-item">
+            <div>
+              <div class="menu-enable">
+                <a class="nav-link" href="#setup">Setup</a>
+              </div>
+
+              <div class="form-check form-check-inline menu-enable">
+                <input id="mode-admin" class="form-check-input" type="checkbox" value="" checked>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="home">
+    <div class="home-text">
+      <h1>Plotter Station</h1>
+
+      <ol>
+        <li>Draw freehand on the plotter</li>
+        <li>Upload files to plot</li>
+        <li>Preview and send a file for plotting</li>
+        <li>Pause, home and change plotter pen. Change paper size and drawing extents</li>
+        <li>Setup interface and plotter parameters</li>
+      </ol>
+    </div>
+  </div>
+
+  <section id="draw">
+    <div>
+      <h2>Draw</h2>
+
+      <div class="container">
+        <canvas id="drawing-pad" width="600" height="400">
+        </canvas>
+
+        <form>
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="x-position">X position mm</label> <input id="x-position" type="number" class="form-control" placeholder="X position mm" value="105">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="y-position">Y position mm</label> <input id="y-position" type="number" class="form-control" placeholder="Y position mm" value="148.5">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="checkbox">
+                <label><input type="checkbox">&nbsp;Pen Down</label>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-warning">Submit</button>
+        </form>
+
+        <div class="info">
+          <div class="row">
+            <div class="col-sm-2">
+              X Step Count
+            </div>
+
+            <div class="col-sm-2">
+              252
+            </div>
+
+            <div class="col-sm-2">
+              Step Direction
+            </div>
+
+            <div class="col-sm-2">
+              clockwise
+            </div>
+
+            <div class="col-sm-2">
+              State
+            </div>
+
+            <div class="col-sm-2">
+              High
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              Y Step Count
+            </div>
+
+            <div class="col-sm-2">
+              202
+            </div>
+
+            <div class="col-sm-2">
+              Step Direction
+            </div>
+
+            <div class="col-sm-2">
+              counter-clockwise
+            </div>
+
+            <div class="col-sm-2">
+              State
+            </div>
+
+            <div class="col-sm-2">
+              Low
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              X Current Position mm
+            </div>
+
+            <div class="col-sm-2">
+              79.17
+            </div>
+
+            <div class="col-sm-2">
+              Y Current Position mm
+            </div>
+
+            <div class="col-sm-2">
+              -63.46
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="files">
+    <div>
+      <h2>ESP32 File Server</h2>
+
+      <div class="container">
+        <table class="fixed" border="0">
+          <colgroup>
+            <col width="1000px">
+            <col width="500px">
+          </colgroup>
+
+          <tbody>
+            <tr>
+              <td>
+                <h2>
+                </h2>
+              </td>
+              <td>
+                <table border="0">
+                  <tbody>
+                    <tr>
+                      <td><label for="newfile">Upload a file</label>
+                      </td>
+                      <td colspan="2"><input id="newfile" type="file" onchange="setpath()" style="width:100%;">
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td><label for="filepath">Set path on server</label>
+                      </td>
+                      <td><input id="filepath" type="text" style="width:100%;">
+                      </td>
+                      <td><button id="upload" type="button" onclick="upload()">Upload</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="fixed" border="1">
+          <colgroup>
+            <col width="800px">
+            <col width="300px">
+            <col width="300px">
+            <col width="100px">
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Size (Bytes)</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>
+                <a href="/index.html">index.html</a>
+              </td>
+              <td>file</td>
+              <td>2869</td>
+              <td>
+                <form method="post" action="/delete/index.html">
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <a href="/Vulcan.svg">Vulcan.svg</a>
+              </td>
+              <td>file</td>
+              <td>57418</td>
+              <td>
+                <form method="post" action="/delete/Vulcan.svg">
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="preview">
+    <div>
+      <h2>Preview</h2>
+
+      <div class="container">
+        <canvas id="control-pad" width="600" height="400">
+        </canvas>
+
+        <form>
+          <button type="submit" class="btn btn-warning">Submit</button>
+        </form>
+
+        <div class="info">
+          <div class="row">
+            <div class="col-sm-2">
+              Approx. time
+            </div>
+
+            <div class="col-sm-2">
+              65 minutes
+            </div>
+
+            <div class="col-sm-2">
+              Estimated finish
+            </div>
+
+            <div class="col-sm-2">
+              Tue 13:45pm
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="control">
+    <div>
+      <h2>Control</h2>
+
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="form-check">
+              <input id="control-unlocked" class="form-check-input" type="checkbox" value="" checked> <label class="form-check-label" for="control-unlocked">Reposition</label>
+            </div>
+
+            <div class="plotter-control">
+              <div id="control-home" class="draggable-button">
+                <i class="fas fa-home primary-colour"></i>
+              </div>
+
+              <div id="control-centre" class="draggable-button">
+                <i class="fas fa-bullseye secondary-colour"></i>
+              </div>
+
+              <div id="control-pen-change" class="draggable-button">
+                <i class="fas fa-pen secondary-colour"></i><i class="fas fa-exchange-alt secondary-colour"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div>
+              <button type="button" class="btn btn-primary"><i class="fas fa-home"></i>&nbsp;Home</button>
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-secondary"><i class="fas fa-bullseye"></i>&nbsp;Centre</button>
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-secondary"><i class="fas fa-pen"></i><i class="fas fa-exchange-alt"></i>&nbsp;Pen change</button>
+            </div>
+          </div>
+
+          <div class="col">
+            <div>
+              <button type="button" class="btn btn-danger">Abort</button>
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-warning" disabled><i class="fas fa-pause"></i>&nbsp;Pause</button>
+            </div>
+
+            <div>
+              <button type="button" class="btn btn-success"><i class="fas fa-play"></i>&nbsp;Resume</button>
+            </div>
+          </div>
+        </div>
+
+        <form>
+          <h3>Paper</h3>
+
+          <div class="row justify-content-end">
+            <div class="form-group">
+              <label for="paper-size-std">Paper size</label> <select id="paper-size-std" class="form-control secondary-select">
+                <option>A2</option>
+                <option>A3</option>
+                <option>A4</option>
+                <option>A5</option>
+              </select>
+            </div>
+
+            <div class="col-sm-4">
+              <label for="paper-short-edge">Short edge mm</label><input id="paper-short-edge" type="text" class="form-control" placeholder="Paper short edge mm" value="420">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="paper-long-edge">Long edge mm</label><input id="paper-long-edge" type="text" class="form-control" placeholder="Paper long edge" value="594">
+            </div>
+          </div>
+
+          <div class="row align-items-end">
+            <!--  align-items-center -->
+
+            <div class="col-sm-4">
+              <label for="extent-bottom">Bottom mm</label><input id="extent-bottom" type="text" class="form-control" placeholder="Bottom mm" value="30">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-bottom-course" type="range" min="0" max="350" value="50" class="slider slider-course">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-bottom-fine" type="range" min="0" max="350" value="175" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-end">
+            <div class="col-sm-4">
+              <label for="extent-left">Left mm</label><input id="extent-left" type="text" class="form-control" placeholder="Left mm" value="30">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-left-course" type="range" min="0" max="350" value="50" class="slider slider-course">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-left-fine" type="range" min="0" max="350" value="175" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-end">
+            <div class="col-sm-4">
+              <label for="extent-top">Top mm</label><input id="extent-top" type="text" class="form-control" placeholder="Top mm" value="360">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-top-course" type="range" min="0" max="350" value="300" class="slider slider-course">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-top-fine" type="range" min="0" max="350" value="175" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-end">
+            <div class="col-sm-4">
+              <label for="extent-right">Right mm</label><input id="extent-right" type="text" class="form-control" placeholder="Right mm" value="500">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-right-course" type="range" min="0" max="350" value="300" class="slider slider-course">
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="extent-right-fine" type="range" min="0" max="350" value="175" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-warning float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+
+        <form>
+          <h3>Image</h3>
+
+          <div class="row align-items-end justify-content-end">
+            <div class="col-sm-4">
+              <label for="extent-bottom">Magnification</label><input id="magnification-value" type="text" class="form-control" placeholder="Magnification" value="100">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="magnification-percent" type="range" min="10" max="100" value="100" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-end justify-content-end">
+            <div class="col-sm-4">
+              <label for="extent-bottom">Speed</label><input id="speed-value" type="text" class="form-control" placeholder="Magnification" value="100">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="slidecontainer">
+                <input id="speed-percent" type="range" min="10" max="100" value="100" class="slider slider-fine">
+              </div>
+            </div>
+          </div>
+
+          <div class="row align-items-center">
+            <div class="col-sm-4">
+              <div class="checkbox">
+                <label><input type="checkbox">&nbsp;Flip top / bottom</label>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="checkbox">
+                <label><input type="checkbox">&nbsp;Flip left / right</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="paper-size-std">Rotate</label> <select id="image-rotate" class="form-control">
+                <option>
+                  0&deg;
+                </option>
+                <option>
+                  90&deg;
+                </option>
+                <option>
+                  180&deg;
+                </option>
+                <option>
+                  270&deg;
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <label for="Pen_thickness_mm">Pen thickness mm</label> <input id="Pen_thickness_mm" type="number" class="form-control" placeholder="Pen thickness mm" value="0.05">
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-warning float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="setup">
+    <div>
+      <h2>Setup Configuration</h2>
+
+      <div class="container">
+        <form>
+          <h3>Stepper Driver Interface</h3>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input id="step-dir" name="setup_driver_iface" class="form-check-input" type="radio" value="driver-step-dir" checked> <label class="form-check-label" for="step-dir">Step &amp; Dir</label>
+              </div>
+
+              <div class="form-check">
+                <input id="spi" name="setup_driver_iface" class="form-check-input" type="radio" value="driver-spi"> <label class="form-check-label" for="spi">SPI</label>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <label for="X_STEP_PIN">X_STEP_PIN</label> <input id="X_STEP_PIN" type="number" class="form-control" placeholder="X_STEP_PIN" min="0" max="35" value="25">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="X_DIR_PIN">X_DIR_PIN</label> <input id="X_DIR_PIN" type="number" class="form-control" placeholder="X_DIR_PIN" min="0" max="35" value="26">
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <label for="Y_STEP_PIN">Y_STEP_PIN</label> <input id="Y_STEP_PIN" type="number" class="form-control" placeholder="Y_STEP_PIN" min="0" max="35" value="32">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="Y_DIR_PIN">Y_DIR_PIN</label> <input id="Y_DIR_PIN" type="number" class="form-control" placeholder="Y_DIR_PIN" min="0" max="35" value="33">
+            </div>
+          </div>
+
+          <h3>Limit switches</h3>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input id="limit-na" name="setup_limit_switches" class="form-check-input" type="radio" value="limit-na" checked> <label class="form-check-label" for="limit-na">Not available</label>
+              </div>
+
+              <div class="form-check">
+                <input id="limit-no" name="setup_limit_switches" class="form-check-input" type="radio" value="limit-no"> <label class="form-check-label" for="limit-no">Normally Open</label>
+              </div>
+
+              <div class="form-check">
+                <input id="limit-nc" name="setup_limit_switches" class="form-check-input" type="radio" value="limit-nc"> <label class="form-check-label" for="limit-nc">Normally Closed</label>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <label for="X_LIMIT_PIN">X_LIMIT_PIN</label> <input id="X_LIMIT_PIN" type="number" class="form-control" placeholder="X_LIMIT_PIN" min="0" max="35" value="34">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="Y_LIMIT_PIN">Y_LIMIT_PIN</label> <input id="Y_LIMIT_PIN" type="number" class="form-control" placeholder="Y_LIMIT_PIN" min="0" max="35" value="35">
+            </div>
+          </div>
+
+          <h3>Pen and Enable</h3>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <label for="PEN_LIFT_PIN">PEN_LIFT_PIN</label> <input id="PEN_LIFT_PIN" type="number" class="form-control" placeholder="PEN_LIFT_PIN" min="0" max="35" value="27">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input id="setup_pen_lift-high" name="setup_pen_lift" class="form-check-input" type="radio" value="active-high"> <label class="form-check-label" for="setup_pen_lift-high">Active high</label>
+              </div>
+
+              <div class="form-check">
+                <input id="setup_pen_lift-low" name="setup_pen_lift" class="form-check-input" type="radio" value="active-low" checked> <label class="form-check-label" for="setup_pen_lift-low">Active low</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <label for="STEP_ENABLE_PIN">STEP_ENABLE_PIN</label> <input id="STEP_ENABLE_PIN" type="number" class="form-control" placeholder="STEP_ENABLE_PIN" min="0" max="35" value="2">
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input id="setup_step_enable-high" name="setup_step_enable" class="form-check-input" type="radio" value="active-high"> <label class="form-check-label" for="setup_step_enable-high">Active high</label>
+              </div>
+
+              <div class="form-check">
+                <input id="setup_step_enable-low" name="setup_step_enable" class="form-check-input" type="radio" value="active-low" checked> <label class="form-check-label" for="setup_step_enable-low">Active low</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-warning float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+
+        <form>
+          <h3>Timings</h3>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="WAKE_FROM_SLEEP_TIME_ms">WAKE_FROM_SLEEP_TIME_ms</label> <input id="WAKE_FROM_SLEEP_TIME_ms" type="number" class="form-control" placeholder="WAKE_FROM_SLEEP_TIME_ms" value="1.7">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="ENBL_AND_DIR_SETUP_HOLD_TIME_ns">ENBL_AND_DIR_SETUP_HOLD_TIME_ns</label> <input id="ENBL_AND_DIR_SETUP_HOLD_TIME_ns" type="number" class="form-control" placeholder="ENBL_AND_DIR_SETUP_HOLD_TIME_ns" value="650">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="STEP_HIGH_LOW_DURATION_us">STEP_HIGH_LOW_DURATION_us</label> <input id="STEP_HIGH_LOW_DURATION_us" type="number" class="form-control" placeholder="STEP_HIGH_LOW_DURATION_us" value="34">
+            </div>
+          </div>
+
+          <h3>Step signals</h3>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label for="MICRO_STEPS">MICRO_STEPS</label> <select class="form-control" id="MICRO_STEPS">
+                  <option>1</option>
+                  <option>1/2</option>
+                  <option>1/4</option>
+                  <option>1/8</option>
+                  <option>1/16</option>
+                  <option>1/32</option>
+                  <option>1/64</option>
+                  <option>1/128</option>
+                  <option>1/256</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-check">
+                <input id="step-edge-rising" name="step_edge" class="form-check-input" type="radio" value="rising_edge" checked> <label class="form-check-label" for="step-edge-rising">Rising edge</label>
+              </div>
+
+              <div class="form-check">
+                <input id="trigger-edge-double" name="step_edge" class="form-check-input" type="radio" value="double_edge"> <label class="form-check-label" for="trigger-edge-double">Double edge</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-warning float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+
+        <form>
+          <h3>Plotter physics</h3>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <label for="pulley_x_diameter_mm">X pulley diameter mm</label> <input id="pulley_x_diameter_mm" type="number" class="form-control" placeholder="X pulley diameter mm" value="20">
+            </div>
+
+            <div class="col-sm-4">
+              <label for="pulley_y_diameter_mm">Y pulley diameter mm</label> <input id="pulley_y_diameter_mm" type="number" class="form-control" placeholder="Y pulley diameter mm" value="20">
+            </div>
+          </div>
+
+          <h3>Stepper properties</h3>
+
+          <div class="row">
+            <div class="col">
+              <div>
+                <canvas id="ramp-graphic" width="450" height="250">
+                </canvas>
+              </div>
+            </div>
+
+            <div class="col">
+              <div>
+                <label for="ramp_a_max">V Max Hz</label> <input id="ramp_v_max" type="number" class="form-control" placeholder="V Max Hz" value="2000">
+              </div>
+
+              <div>
+                <label for="ramp_a_max">A Max Hz/s</label> <input id="ramp_a_max" type="number" class="form-control" placeholder="A Max Hz/s" value="200">
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-end">
+            <div class="col-sm-4">
+              <button type="submit" class="btn btn-warning float-right">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <a href="https://makebournemouth.com/"><img src="makebmth_logo.png" alt="MakeBmth Website" class="img-link"></a>
+    </footer>
+  </section>
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script> <!-- for draggable -->
+   
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script> 
+  <script src="script.js"></script>
+</body>
+</html>
+
